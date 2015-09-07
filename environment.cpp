@@ -30,10 +30,10 @@ void makeDebugWindow(){
     debugWindow = new QTextEdit(0);
     debugWindow->setWindowTitle("Server debug info");
     debugWindow->resize(300,300);
-    debugWindow->show();
+    //debugWindow->show();
 }
 
-void Debug(QString info){\
+void Debug(QString info){
     if (debugWindow==NULL){
         qDebug()<<info;
         return;

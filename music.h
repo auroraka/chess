@@ -16,11 +16,11 @@ public:
     void playMusic(QString name);//播放音乐name
     MusicStatus getStatus();//音乐播放状态(播放/停止)
     void addMusic(QString,QString);
+    QSound *background;
 
 private:
     MusicStatus status;
     map<QString,QString> musicList;
-    QSound *background;
 };
 
 

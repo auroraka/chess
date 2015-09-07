@@ -14,7 +14,7 @@
    <bool>false</bool>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>双人五子棋</string>
   </property>
   <widget class="QLabel" name="gameArea">
    <property name="geometry">

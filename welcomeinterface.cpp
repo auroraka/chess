@@ -20,7 +20,7 @@ WelcomeInterface::WelcomeInterface(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->onePersonGame_button->hide();
-    ui->label->setText("您的游戏名称为: "+gameI->userName);
+    ui->label_2->setText(gameI->userName);
     //添加背景
     this->setAutoFillBackground(true);
     QPalette palette;
@@ -65,5 +65,5 @@ void WelcomeInterface::on_rename_button_clicked()
 {
     QString name=QInputDialog::getText(this,"更改名字","请输入新游戏名称");
     gameI->userName=name;
-    ui->label->setText("您的游戏名称为: "+gameI->userName);
+    ui->label_2->setText(gameI->userName);
 }

@@ -19,14 +19,15 @@
 using std::vector;
 
 QString nameList[]={
-    "Tom",
-    "HuangDaDa",
-    "SillB",
-    "OMG",
-    "keke",
-    "yo"
+    "长者",
+    "一碗牛肉面",
+    "鸡飞蛋打",
+    "王大锤",
+    "张大锤",
+    "李二狗",
+    "诸葛亮"
 };
-int nameTot=6;
+int nameTot=7;
 
 GameInterface::GameInterface(QWidget *parent) :
     QWidget(parent),
@@ -254,7 +255,7 @@ void GameInterface::moveOneStep(int x,int y){
     timer.start(1000);
     ui->lcdNumber->display(20);
     gameInfo->map[x][y]=nowColor;
-    ui->announcement->setText("");
+    ui->announcement->setText("公告: 游戏进行中");
     myUpdate();
     if (checkGameOver()){
         qDebug()<<"gameOver: you win";
@@ -262,10 +263,11 @@ void GameInterface::moveOneStep(int x,int y){
     }
     nowColor^=1;
     if (myColor == nowColor){
-        ui->chatWindow_textEdit->append("现在轮到您的回合");
+        ui->chatWindow_textEdit->append("现在轮到您的回合\n");
     }else{
-        ui->chatWindow_textEdit->append("现在轮到对方的回合");
+        ui->chatWindow_textEdit->append("现在轮到对方的回合\n");
     }
+    saveRecord();
 }
 
 void GameInterface::mousePressEvent(QMouseEvent *event){
@@ -277,7 +279,7 @@ void GameInterface::mousePressEvent(QMouseEvent *event){
     moveLoc=QPoint(-1,-1);
     int x=loc.x(),y=loc.y();
     if (loc != QPoint(-1,-1)){
-        if (nowColor == myColor && gameInfo->map[x][x]==2){
+        if ((nowColor == myColor) && (gameInfo->map[x][y]==2)){
             qDebug()<<"!!!!!!!!!!!!!   "<<x<<" "<<y<<" "<<gameInfo->map[x][x];
             tcp->sendInfo("move_one_step",x,y);
             moveOneStep(x,y);
@@ -294,6 +296,9 @@ void GameInterface::mousePressEvent(QMouseEvent *event){
 
 
 void GameInterface::gameStart(){
+    ui->loadGame_button->setEnabled(false);
+    ui->gamePrepare_button->setEnabled(false);
+    ui->announcement->setText("公告: 游戏开始");
     for (int i=0;i<15;i++)
         for (int j=0;j<15;j++)
             gameInfo->map[i][j]=2;
@@ -308,9 +313,9 @@ void GameInterface::gameStart(){
     ui->gamePrepare_button->hide();
 
     if (myColor==nowColor){
-        ui->chatWindow_textEdit->append("游戏开始 现在是你的回合");
+        ui->chatWindow_textEdit->append("游戏开始 现在是你的回合\n");
     }else{
-        ui->chatWindow_textEdit->append("游戏开始 现在是对方的回合");
+        ui->chatWindow_textEdit->append("游戏开始 现在是对方的回合\n");
     }
 //    if (gameInfo->playingOne[0]==-1||gameInfo->playingOne[1]==-1){
 //        qDebug()<<"[SYS ERROR] playingOne not init";
@@ -369,6 +374,9 @@ void GameInterface::gameRestart(){
 }
 
 void GameInterface::gameEnd(){
+    ui->gamePrepare_button->show();
+    ui->loadGame_button->setEnabled(true);
+    ui->announcement->setText("公告: 游戏结束");
     ui->gamePrepare_button->setEnabled(true);
     ui->gamePrepare_button->setText("准备");
     int timeUse=startTime.secsTo(QDateTime::currentDateTime());
@@ -380,7 +388,9 @@ void GameInterface::gameEnd(){
 
     }
     saveRecord();
+    music->background->stop();
     QMessageBox::about(this,(winColor==myColor)?"您赢了":"您输了","您的思考时间共计: "+QString::number(timeUse));
+    music->background->play();
     ui->gamePrepare_button->show();
     myColor^=1;
     gameRestart();
@@ -407,7 +417,7 @@ void GameInterface::on_send_button_clicked()
 void GameInterface::prepareAdd(QString name){
     totPrepare++;
     ui->chatWindow_textEdit->append("玩家 "+name+" 已准备");
-    ui->chatWindow_textEdit->append("tot prepared: "+QString::number(totPrepare));
+    ui->chatWindow_textEdit->append("tot prepared: "+QString::number(totPrepare)+"\n");
     if (totPrepare>=2){
         gameStart();
     }
@@ -419,7 +429,7 @@ void GameInterface::on_gamePrepare_button_clicked()
     tcp->sendInfo("prepare",userName);
     prepareAdd(userName);
     ui->gamePrepare_button->setEnabled(false);
-    ui->gamePrepare_button->setText("等待对方准备");
+    ui->gamePrepare_button->setText("等待对方准备\n");
 }
 
 void GameInterface::talk(QString info){
