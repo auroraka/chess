@@ -24,7 +24,7 @@ WelcomeInterface::WelcomeInterface(QWidget *parent) :
     //添加背景
     this->setAutoFillBackground(true);
     QPalette palette;
-    palette.setBrush(QPalette::Background, QBrush(QPixmap("../chess/picture/bg2.jpg")));
+    palette.setBrush(QPalette::Background, QBrush(QPixmap(":/picture/picture/bg2.jpg")));
     this->setPalette(palette);
     setAcceptDrops(true);
 

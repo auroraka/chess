@@ -6,6 +6,13 @@
         <file>picture/white.png</file>
         <file>picture/star.png</file>
         <file>picture/bg.jpg</file>
+        <file>picture/bg2.jpg</file>
     </qresource>
-    <qresource prefix="/music"/>
+    <qresource prefix="/music">
+        <file>music/background.wav</file>
+        <file>music/failsound.wav</file>
+        <file>music/menuback.wav</file>
+        <file>music/menuclick.wav</file>
+        <file>music/winsound.wav</file>
+    </qresource>
 </RCC>
